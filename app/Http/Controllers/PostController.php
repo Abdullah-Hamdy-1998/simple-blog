@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePostRequest;
@@ -11,8 +10,14 @@ use App\Http\Requests\StorePostRequest;
 class PostController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index()
-    { 
+    {
         if (Gate::allows('viewAny', new Post())) {
             $posts = Post::all();
         } else {
@@ -30,7 +35,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         auth()->user()->posts()->create(['title' => $request->title, 'body' => $request->body]);
-        
+
         return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 

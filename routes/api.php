@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\APIAuthController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login',  [APIAuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    
+});
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Not Found',
+    ], 404);
 });
