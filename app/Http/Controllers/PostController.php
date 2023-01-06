@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StorePostRequest;
 
 class PostController extends Controller
 {
 
     public function index()
     {
-        return view('posts.index');
+        if (Gate::allows('viewAny')) {
+
+            $posts = Post::all();
+        } else {
+
+            $posts = auth()->user()->posts;
+        }
+
+        return view('posts.index', ['posts' => $posts]);
     }
 
     public function create()
