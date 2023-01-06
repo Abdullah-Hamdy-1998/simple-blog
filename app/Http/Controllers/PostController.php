@@ -23,7 +23,7 @@ class PostController extends Controller
         } else {
             $posts = auth()->user()->posts;
         }
-
+        
         return view('posts.index', ['posts' => $posts]);
     }
 

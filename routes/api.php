@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\APIAuthController;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\API\APIAuthController;
+use App\Http\Controllers\API\APIPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login',  [APIAuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    
+    Route::get('posts', [APIPostController::class, 'index']);
 });
 
 Route::fallback(function () {
