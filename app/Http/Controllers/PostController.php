@@ -12,12 +12,10 @@ class PostController extends Controller
 {
 
     public function index()
-    {
-        if (Gate::allows('viewAny')) {
-
+    { 
+        if (Gate::allows('viewAny', new Post())) {
             $posts = Post::all();
         } else {
-
             $posts = auth()->user()->posts;
         }
 
@@ -32,13 +30,17 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         auth()->user()->posts()->create(['title' => $request->title, 'body' => $request->body]);
-
+        
         return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
     public function edit(Post $post)
     {
-        return view('posts.edit', ['post' => $post]);
+        if (Gate::allows('update', $post)) {
+            return view('posts.edit', ['post' => $post]);
+        }
+
+        return abort(Response::HTTP_UNAUTHORIZED);
     }
 
     public function update(StorePostRequest $request, Post $post)

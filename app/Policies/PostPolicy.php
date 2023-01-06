@@ -17,7 +17,6 @@ class PostPolicy
 
     public function update(User $user, Post $post)
     {
-
         return $user->is_admin() || $user->id == $post->user_id;
     }
 
