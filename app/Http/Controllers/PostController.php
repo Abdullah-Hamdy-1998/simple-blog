@@ -52,6 +52,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        //
+        if (Gate::allows('delete', $post)) {
+            $post->delete();
+        }
+
+        return redirect()->route('posts.index');
     }
 }
