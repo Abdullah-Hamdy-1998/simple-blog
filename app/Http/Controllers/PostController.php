@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePostRequest;
 
@@ -35,27 +36,30 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
-    public function show(Post $post)
-    {
-        //
-    }
-
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post' => $post]);
     }
 
-    public function update(Request $request, Post $post)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+        if (Gate::allows('update', $post)) {
+
+            $post->update(['title' => $request->title, 'body' => $request->body]);
+            return redirect()->route('posts.index')->with('success', 'Post updated successfully');
+        }
+
+        return abort(Response::HTTP_UNAUTHORIZED);
     }
 
     public function destroy(Post $post)
     {
         if (Gate::allows('delete', $post)) {
+
             $post->delete();
+            return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
         }
 
-        return redirect()->route('posts.index');
+        return abort(Response::HTTP_UNAUTHORIZED);
     }
 }
