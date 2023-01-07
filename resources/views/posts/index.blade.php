@@ -13,7 +13,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
-                        {{-- @if (count($posts) > 0) --}}
+                        @if (count($posts) > 0)
                             @foreach ($posts as $post)
                                 <div class="card mb-4">
                                     <div class="card-body">
@@ -33,9 +33,9 @@
                                     </div>
                                 </div>
                             @endforeach
-                        {{-- @else
+                        @else
                             <p>There are no posts to show.</p>
-                        @endif --}}
+                        @endif
                     </div>
                 </div>
             </div>
